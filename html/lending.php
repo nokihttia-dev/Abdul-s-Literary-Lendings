@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="..\static\css\style.css">
     <!-- ======= boxicons ====== -->
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <style>
     .transparent-button {
@@ -33,7 +34,7 @@
         <div class="sidebar">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="#">
                         <span class="icon">
                             <img src="..\logo\CS251_Logo.png" alt="" class="logo-img">
                         </span>
@@ -150,95 +151,31 @@
                 </div>
 
             </div>
-            <div class="content">
-                <!-- ======================== Customers ======================  -->
-                <div id="Customers">
-                    <form action="customer.php" method="POST">
-                        <div class="customer-search">
-                            <label>
-                                <input type="text" id="customerID" name="customerID" placeholder="Enter customer ID">
-                            </label>
-                            <div class="button-container">
-                                <button type="submit" class="btn btn-primary" >Enter</button>
-                            </div>
-                        </div>
-                    </form>
-                    <form action="../php/addcustomer.php" method="POST">
-                    <div class="information-container">
-                        <div style="text-align: center;">
-                            <h2>New customer</h2><br>
-                        </div>
-                        <div class="info-group">
-                            <label for="firstName"> <b>First name:</b> <input type="text"
-                                name="firstName" id="firstName" placeholder="Customer name" required></label>
-                            </div>  
-                        <div class="info-group">
-                            <label for="lastName"> <b>Last name:</b> <input type="text"
-                                name="lastName" id="lastName"    placeholder="Customer lastname" required></label>
-                        </div>   
-                        <div class="info-in my dtive ">
-                            <label for="lastName"> <b>Last n:</b> <input type="text"
-                                name="lastName" id="lastName"    placeholder="Customer lastname" required></label>
-                        </div> 
-                        <div class="info-group">      
-                            <label for="citizen_id"> <b>Citizen ID:</b> <input type="text" name="citizen_id" id="citizen_id"
-                                    placeholder="citizenId" required></label>
-                                    <span id="citizen_id_error" style="color: red;"></span>
-                                </div>   
-                                <div class="info-group">
-                                    <label for="phone"> <b>Phone number:</b> <input type="text" name="phone" id="phone" placeholder="PhoneNumber" required></label>
-                                </div>
-                                <div class="info-group">   
-                                    <label for="customer_type"> <b>Customer type:</b>
-                                <select name="customer_type" id="customer_type">
-                                    <option value="not_member">Not Member</option>
-                                    <option value="member">Member</option>
-                                </select>
-                            </label>
-                        </div>
 
-                        <div class="info-group" id="member_info" style="display: none;">
-                            <div class="info-group"> 
-                            <label for="memStart"> <b>Member start:</b> <input type="date" name="memStart" id="memStart"></label>
-                            </div>
-                            <div class="info-group"> 
-                            <label for="memExp"> <b>Member end:</b> <input type="date" name="memExp" id="memExp" ></label>
-                            </div>
-                        </div>
-                        
-                        <div class="button-container">
-                            <button type="submit" class="btn btn-primary" >add</button>
-                        </div>
-                    </div>
-                    </div>
+                <!-- ======================== Lendings ======================  -->
+                <div class="content">
+    <div class="Lending" id="Lendings">
+        <h2>All lending</h2><br>
 
-                    </div>
-                </form>
-                </div>
-                </main>
-            </div>
+        <!-- เริ่มตาราง Borrowing -->
+        <table id="borrowingTable">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Book ID</th>
+                    <th>Start Date</th>
+                    <th>Return Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ข้อมูลในตารางจะถูกแสดงที่นี่ -->
+            </tbody>
+        </table>
+        <!-- สิ้นสุดตาราง Borrowing -->
+    </div>
+</div>
 
-            <script>
-                document.getElementById('customer_type').addEventListener('change', function() {
-                    var memberInfo = document.getElementById('member_info');
-                    if (this.value === 'member') {
-                        memberInfo.style.display = 'block';
-                    } else {
-                        memberInfo.style.display = 'none';
-                    }
-                });
-
-                document.getElementById("citizen_id").addEventListener("input", function() {
-        var citizen_id = this.value;
-        var error_message = "";
-        
-        if (citizen_id.length !== 13 || isNaN(citizen_id)) {
-            error_message = "Citizen ID must be 13 digits long and contain only numbers.";
-        }
-
-        document.getElementById("citizen_id_error").textContent = error_message;
-    });
-            </script>
 
             <!-- ======================== Addbook ======================  -->
             <div id="Addbook">
@@ -261,6 +198,60 @@
                 }, 1000);
             });
         });
+
+            // เรียกใช้งานฟังก์ชันเมื่อหน้าเว็บโหลดเสร็จ
+    window.onload = function() {
+        // เรียกฟังก์ชันสำหรับดึงข้อมูล borrowing
+        fetchBorrowingData();
+    }
+
+    // ฟังก์ชันสำหรับดึงข้อมูล borrowing และแสดงในตาราง
+    function fetchBorrowingData() {
+        fetch('../php/fetch_borrowing_data.php')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#borrowingTable tbody');
+                tbody.innerHTML = '';
+
+                // สร้างแถวข้อมูลสำหรับแต่ละการยืมหนังสือ
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.customerID}</td>
+                        <td>${row.bookID}</td>
+                        <td>${row.startDate}</td>
+                        <td>${row.returnDate}</td>
+                        <td>
+                        <button onclick="deleteRow('${row.customerID}', '${row.bookID}')" class="return-button"> Return
+                        </button>
+
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+    }
+
+    // ฟังก์ชันสำหรับลบแถวในตาราง borrowing
+    function deleteRow(customerID, bookID) {
+        if (confirm('Are you sure you want to delete this row?')) {
+            fetch('../php/delete_borrowing_row.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ customerID, bookID })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // เมื่อลบแถวเสร็จสิ้น ให้ดึงข้อมูลใหม่และแสดงในตาราง
+                    fetchBorrowingData();
+                } else {
+                    alert('Error deleting row');
+                }
+            });
+        }
+    }
     </script>
 </body>
+
 </html>

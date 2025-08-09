@@ -42,7 +42,7 @@ subMenu.addEventListener("mouseleave", function(e) {
 });
 // ================================================================================================
 // Gemini ทำให้
-function showPage(pageId) {
+/*function showPage(pageId) {
   // ซ่อนหน้าทั้งหมด
   const allPages = document.querySelectorAll(".content > div"); //:ซ้อนหน้าช่วง content เป็นต้นไป
   for (const page of allPages) {
@@ -54,7 +54,7 @@ function showPage(pageId) {
   if (targetPage) {
       targetPage.style.display = "block";
   }
-}
+}*/
 // หน้า Profile
 // เพิ่มข้อความลงในช่องให้กรอก
 let userID = document.getElementById("userID");
@@ -101,7 +101,7 @@ showPage('home');  //  แสดงหน้าแรก ("home") ตั้ง�
 
 //========  ตรงนี้คือส่วนน Home ค้าบ======================
 // JavaScript Code
-let images = [
+/*let images = [
   '../logo/announcement1.jpg',
   '../logo/announcement2.jpg',
   '../logo/announcement3.jpg'
@@ -163,23 +163,23 @@ document.addEventListener('keydown', function(event) {
       nextImage(); // เรียกใช้ฟังก์ชันเปลี่ยนภาพไปยังภาพถัดไป
   }
 });
-
+*/
 
 // ========================= ส่วน LENDING ===========================
 function openPopup(status) {
   // ตรวจสอบว่าข้อมูลถูกกรอกครบหรือไม่
-  var bookID = document.querySelector('input[name="book_id"]').value;
-  var bookPrice = document.querySelector('input[name="book_price"]').value;
-  var customerName = document.querySelector('input[name="customer_name"]').value;
-  var citizenID = document.querySelector('input[name="citizen_id"]').value;
-  var phone = document.querySelector('input[name="phone"]').value;
-  var startDate = document.querySelector('input[name="start_date"]').value;
-  var email = document.querySelector('input[name="email"]').value;
-  var returnDate = document.querySelector('input[name="return_date"]').value;
-  var totalPrice = document.querySelector('input[name="total_price"]').value;
+  // var bookID = document.querySelector('input[name="book_id"]').value;
+  // var bookPrice = document.querySelector('input[name="book_price"]').value;
+  // var customerName = document.querySelector('input[name="customer_name"]').value;
+  // var citizenID = document.querySelector('input[name="citizen_id"]').value;
+  // var phone = document.querySelector('input[name="phone"]').value;
+  // var startDate = document.querySelector('input[name="start_date"]').value;
+  // var email = document.querySelector('input[name="email"]').value;
+  // var returnDate = document.querySelector('input[name="return_date"]').value;
+  // var totalPrice = document.querySelector('input[name="total_price"]').value;
 
   // ตรวจสอบว่ามีข้อมูลทุกอย่างถูกกรอกหรือไม่
-  if (bookID && bookPrice && customerName && citizenID && phone && startDate && email && returnDate && totalPrice) {
+  // if (bookID && bookPrice && customerName && citizenID && phone && startDate && email && returnDate && totalPrice) {
     if (status === "success") {
       // แสดงป๊อปอัพสำหรับสถานะ "success"
       document.getElementById("successPopup").style.display = "block";
@@ -191,10 +191,10 @@ function openPopup(status) {
       // แสดง overlay เพื่อบังคับให้ผู้ใช้ใช้ป๊อปอัพเท่านั้น
       document.getElementById("overlay").style.display = "block";
     }
-  } else {
-    // แจ้งเตือนให้กรอกข้อมูลให้ครบ
-    alert("Please fill in all fields before proceeding.");
-  }
+  // } else {
+  //   // แจ้งเตือนให้กรอกข้อมูลให้ครบ
+  //   alert("Please fill in all fields before proceeding.");
+ // }
 }
 
 // ฟังก์ชันปิดป๊อปอัพ
@@ -219,3 +219,24 @@ function checkPasswords() {
 
 const confirmPasswordInput = document.getElementById('confirm_password');
 confirmPasswordInput.addEventListener('input', checkPasswords);
+
+document.getElementById("searchInput").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+      event.preventDefault(); // Prevent default form submission
+      document.getElementById("searchForm").submit(); // Submit the form
+  }
+});
+
+/////////////////////////////////////////////
+// เพิ่มตัวแปรเพื่อเก็บ ID ของ interval เพื่อเรียกใช้ clearInterval() ในกรณีที่ต้องการหยุดการเปลี่ยนภาพ
+let imageInterval;
+
+// เพิ่มฟังก์ชันเพื่อเปลี่ยนภาพไปยังภาพถัดไปทุก 2 วินาที
+function changeImage() {
+  nextImage();
+}
+
+// เริ่มการเปลี่ยนภาพทุก 2 วินาที เมื่อหน้าเว็บโหลดเสร็จ
+window.addEventListener('load', function() {
+  imageInterval = setInterval(changeImage, 1000);
+});

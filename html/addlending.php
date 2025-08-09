@@ -33,7 +33,7 @@
         <div class="sidebar">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="#">
                         <span class="icon">
                             <img src="..\logo\CS251_Logo.png" alt="" class="logo-img">
                         </span>
@@ -60,7 +60,7 @@
                 </li>
 
                 <li>
-                    <a href="lending.php">
+                    <a href="lending.php" >
                         <span class="icon">
                             <i class="bx bx-book-reader"></i>
                         </span>
@@ -150,95 +150,92 @@
                 </div>
 
             </div>
-            <div class="content">
-                <!-- ======================== Customers ======================  -->
-                <div id="Customers">
-                    <form action="customer.php" method="POST">
-                        <div class="customer-search">
-                            <label>
-                                <input type="text" id="customerID" name="customerID" placeholder="Enter customer ID">
-                            </label>
-                            <div class="button-container">
-                                <button type="submit" class="btn btn-primary" >Enter</button>
+
+                <!-- ======================== Lendings ======================  -->
+             <div class="content">
+                <form action="../php/sendlendings.php" method="post">
+                    <div class="Lending" id="Lendings">
+                        <h2>Lendings information</h2><br>
+                        <div class="form-group">
+                        <?php
+require_once('../php/db_connection.php');
+$bookID = $_POST['bookId'];
+    // Prepare SQL query to fetch book details along with author and category
+// คิวรีเพื่อดึงข้อมูลหนังสือพร้อมผู้เขียนและประเภท
+$sql_books_info = "SELECT cb.*, a.Author, c.Category,
+                   CASE
+                       WHEN l.bookID IS NOT NULL THEN 'red'
+                       ELSE 'green'
+                   END AS status_color
+                   FROM cartoonbook cb
+                   LEFT JOIN author a ON cb.bookID = a.bookID
+                   LEFT JOIN category c ON cb.bookID = c.bookID
+                   LEFT JOIN borrowing l ON cb.bookID = l.bookID
+                   WHERE cb.bookID = '$bookID'";
+
+
+    // Execute the query
+    $result = $conn->query($sql_books_info);
+
+    // Check if any matching books found
+    if ($result->num_rows > 0) {
+        // Loop through the results
+        while ($row = $result->fetch_assoc()) {
+            ?>
+            <div class="addbook">
+                <img src="<?php echo $row["bookcover"]; ?>" >
+                <div class="book-info">
+                    <h2><?php echo $row["bookName"]; ?></h2>
+                    <p>Writer: <?php echo $row["Author"]; ?></p>
+                    <p>Type: <?php echo $row["Category"]; ?></p>
+                    <p>Rental: <?php echo $row["price"]; ?> Bath</p>
+                     
+                </div>
+            </div>
+            
+             <?php
+        }
+    } else {
+        // Display a message if no matching books found
+        echo "No books found with the given search term.";
+    }
+
+?></div>
+
+                        <div class="form-group">
+                        <label for="customerID"> <b>customer ID:</b>
+                                <input type="text" name="customerID" id="customerID" placeholder="customerID"></label>
+                            <label for="start_date"> <b>Start Date:</b>
+                                <input type="date" name="start_date" id="start_date" placeholder=""></label>
+
+                                <label for="return_date"> <b>return Date:</b>
+                                    <input type="date" name="return_date" id="return_date" placeholder=""></label>
+                        </div>
+                        <input type="hidden" name="bookID" value="<?php echo $bookID; ?>">
+
+                        <div class="button-container">
+                            <button type="submit" class="btn" onclick="openPopup('success')">Confirm Payment</button>
+                            <div id="successPopup" class="popup">
+                                <img src="../logo/checkmark.png" alt="">
+                                <h2>Payment Successful</h2>
+                                <p>Money transfer has been completed!</p>
+                                <button type="button" class="btn1" onclick="closePopup()">OK</button>
                             </div>
-                        </div>
-                    </form>
-                    <form action="../php/addcustomer.php" method="POST">
-                    <div class="information-container">
-                        <div style="text-align: center;">
-                            <h2>New customer</h2><br>
-                        </div>
-                        <div class="info-group">
-                            <label for="firstName"> <b>First name:</b> <input type="text"
-                                name="firstName" id="firstName" placeholder="Customer name" required></label>
-                            </div>  
-                        <div class="info-group">
-                            <label for="lastName"> <b>Last name:</b> <input type="text"
-                                name="lastName" id="lastName"    placeholder="Customer lastname" required></label>
-                        </div>   
-                        <div class="info-in my dtive ">
-                            <label for="lastName"> <b>Last n:</b> <input type="text"
-                                name="lastName" id="lastName"    placeholder="Customer lastname" required></label>
-                        </div> 
-                        <div class="info-group">      
-                            <label for="citizen_id"> <b>Citizen ID:</b> <input type="text" name="citizen_id" id="citizen_id"
-                                    placeholder="citizenId" required></label>
-                                    <span id="citizen_id_error" style="color: red;"></span>
-                                </div>   
-                                <div class="info-group">
-                                    <label for="phone"> <b>Phone number:</b> <input type="text" name="phone" id="phone" placeholder="PhoneNumber" required></label>
-                                </div>
-                                <div class="info-group">   
-                                    <label for="customer_type"> <b>Customer type:</b>
-                                <select name="customer_type" id="customer_type">
-                                    <option value="not_member">Not Member</option>
-                                    <option value="member">Member</option>
-                                </select>
-                            </label>
+                            <div id="failurePopup" class="popup">
+                                <h2>Payment Failed</h2>
+                                <p>Something went wrong!</p>
+                                <button type="button" class="btn1" onclick="closePopup()">OK</button>
+                            </div>
+                            <div id="overlay" class="overlay"></div>
                         </div>
 
-                        <div class="info-group" id="member_info" style="display: none;">
-                            <div class="info-group"> 
-                            <label for="memStart"> <b>Member start:</b> <input type="date" name="memStart" id="memStart"></label>
-                            </div>
-                            <div class="info-group"> 
-                            <label for="memExp"> <b>Member end:</b> <input type="date" name="memExp" id="memExp" ></label>
-                            </div>
-                        </div>
-                        
-                        <div class="button-container">
-                            <button type="submit" class="btn btn-primary" >add</button>
-                        </div>
-                    </div>
-                    </div>
+                        <div class="container" id="bookDetails" >
 
                     </div>
                 </form>
-                </div>
                 </main>
             </div>
 
-            <script>
-                document.getElementById('customer_type').addEventListener('change', function() {
-                    var memberInfo = document.getElementById('member_info');
-                    if (this.value === 'member') {
-                        memberInfo.style.display = 'block';
-                    } else {
-                        memberInfo.style.display = 'none';
-                    }
-                });
-
-                document.getElementById("citizen_id").addEventListener("input", function() {
-        var citizen_id = this.value;
-        var error_message = "";
-        
-        if (citizen_id.length !== 13 || isNaN(citizen_id)) {
-            error_message = "Citizen ID must be 13 digits long and contain only numbers.";
-        }
-
-        document.getElementById("citizen_id_error").textContent = error_message;
-    });
-            </script>
 
             <!-- ======================== Addbook ======================  -->
             <div id="Addbook">
@@ -248,6 +245,11 @@
     </div>
 
 
+
+ 
+
+
+        </div>
     <!-- =========== Scripts =========  -->
     <script src="statistics.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -261,6 +263,14 @@
                 }, 1000);
             });
         });
+
+    function showBookDetails(book_id) {
+        // แสดงส่วนของ HTML ที่ต้องการเมื่อคลิกปุ่ม "Show Book Details"
+        document.getElementById('bookDetails').style.display = 'block';
+    }
+</script>
+
     </script>
 </body>
+
 </html>

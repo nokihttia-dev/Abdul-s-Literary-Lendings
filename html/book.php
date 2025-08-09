@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +34,7 @@
         <div class="sidebar">
             <ul>
                 <li>
-                    <a href="index.html">
+                    <a href="#">
                         <span class="icon">
                             <img src="..\logo\CS251_Logo.png" alt="" class="logo-img">
                         </span>
@@ -55,7 +56,7 @@
                         <span class="icon">
                             <i class="bx bx-book"></i>
                         </span>
-                        <span class="title">Books</span>
+                        <span class="title">book</span>
                     </a>
                 </li>
 
@@ -150,95 +151,67 @@
                 </div>
 
             </div>
-            <div class="content">
-                <!-- ======================== Customers ======================  -->
-                <div id="Customers">
-                    <form action="customer.php" method="POST">
-                        <div class="customer-search">
-                            <label>
-                                <input type="text" id="customerID" name="customerID" placeholder="Enter customer ID">
-                            </label>
-                            <div class="button-container">
-                                <button type="submit" class="btn btn-primary" >Enter</button>
-                            </div>
-                        </div>
-                    </form>
-                    <form action="../php/addcustomer.php" method="POST">
-                    <div class="information-container">
-                        <div style="text-align: center;">
-                            <h2>New customer</h2><br>
-                        </div>
-                        <div class="info-group">
-                            <label for="firstName"> <b>First name:</b> <input type="text"
-                                name="firstName" id="firstName" placeholder="Customer name" required></label>
-                            </div>  
-                        <div class="info-group">
-                            <label for="lastName"> <b>Last name:</b> <input type="text"
-                                name="lastName" id="lastName"    placeholder="Customer lastname" required></label>
-                        </div>   
-                        <div class="info-in my dtive ">
-                            <label for="lastName"> <b>Last n:</b> <input type="text"
-                                name="lastName" id="lastName"    placeholder="Customer lastname" required></label>
-                        </div> 
-                        <div class="info-group">      
-                            <label for="citizen_id"> <b>Citizen ID:</b> <input type="text" name="citizen_id" id="citizen_id"
-                                    placeholder="citizenId" required></label>
-                                    <span id="citizen_id_error" style="color: red;"></span>
-                                </div>   
-                                <div class="info-group">
-                                    <label for="phone"> <b>Phone number:</b> <input type="text" name="phone" id="phone" placeholder="PhoneNumber" required></label>
-                                </div>
-                                <div class="info-group">   
-                                    <label for="customer_type"> <b>Customer type:</b>
-                                <select name="customer_type" id="customer_type">
-                                    <option value="not_member">Not Member</option>
-                                    <option value="member">Member</option>
-                                </select>
-                            </label>
-                        </div>
+                            <!-- ======================== Book ======================  -->
+                            <div class="content-book">
+    <div class="list" id="bookList">
+        <h1>Book List</h1>
+        <div class="container">
+        <?php
+require_once('../php/db_connection.php');
 
-                        <div class="info-group" id="member_info" style="display: none;">
-                            <div class="info-group"> 
-                            <label for="memStart"> <b>Member start:</b> <input type="date" name="memStart" id="memStart"></label>
-                            </div>
-                            <div class="info-group"> 
-                            <label for="memExp"> <b>Member end:</b> <input type="date" name="memExp" id="memExp" ></label>
-                            </div>
-                        </div>
-                        
-                        <div class="button-container">
-                            <button type="submit" class="btn btn-primary" >add</button>
-                        </div>
-                    </div>
-                    </div>
+// คิวรีเพื่อดึงข้อมูลหนังสือพร้อมผู้เขียนและประเภท
+$sql_books_info = "SELECT cb.*, a.Author, c.Category,
+                   CASE
+                       WHEN l.bookID IS NOT NULL THEN 'red'
+                       ELSE 'green'
+                   END AS status_color
+                   FROM cartoonbook cb
+                   LEFT JOIN author a ON cb.bookID = a.bookID
+                   LEFT JOIN category c ON cb.bookID = c.bookID
+                   LEFT JOIN borrowing l ON cb.bookID = l.bookID";
 
-                    </div>
-                </form>
-                </div>
-                </main>
-            </div>
+$result_books_info = $conn->query($sql_books_info);
 
-            <script>
-                document.getElementById('customer_type').addEventListener('change', function() {
-                    var memberInfo = document.getElementById('member_info');
-                    if (this.value === 'member') {
-                        memberInfo.style.display = 'block';
-                    } else {
-                        memberInfo.style.display = 'none';
-                    }
-                });
+if ($result_books_info->num_rows > 0) {
+    while($row = $result_books_info->fetch_assoc()) {
+        ?>
+<div class="book">
+    <img src="<?php echo $row["bookcover"]; ?>" >
+    <div class="book-info">
+        <h2><?php echo $row["bookName"]; ?></h2>
+        <p>Writer: <?php echo $row["Author"]; ?></p>
+        <p>Type: <?php echo $row["Category"]; ?></p>
+        <p>Rental: <?php echo $row["price"]; ?> Bath</p>
+        <?php if($row["status_color"] == 'green'): ?>
+            <a class="more-info-btn" style="background-color: <?php echo $row["status_color"]; ?>">Available</a>
+            <form action="addlending.php" method="POST">
+                <input type="hidden" name="bookId" value="<?php echo $row['bookID']; ?>">
+                <button type="submit" class="more-info-btn">Lending</button>
+            </form>
+        <?php else: ?>
+            <a class="more-info-btn" style="background-color: <?php echo $row["status_color"]; ?>">Available</a>
+        <?php endif; ?>
+         
+    </div>
+</div>
 
-                document.getElementById("citizen_id").addEventListener("input", function() {
-        var citizen_id = this.value;
-        var error_message = "";
-        
-        if (citizen_id.length !== 13 || isNaN(citizen_id)) {
-            error_message = "Citizen ID must be 13 digits long and contain only numbers.";
-        }
+        <?php
+    }
+} else {
+    echo "0 results";
+}
+?>
 
-        document.getElementById("citizen_id_error").textContent = error_message;
-    });
-            </script>
+        </div>
+        <div class="pagination">
+            <a href="#" class="prev-page">หน้าก่อนหน้า</a>
+            <span class="current-page">หน้า 1</span>
+            <a href="#" class="next-page">หน้าถัดไป</a>
+        </div>
+    </div>
+</div>
+
+
 
             <!-- ======================== Addbook ======================  -->
             <div id="Addbook">
@@ -263,4 +236,5 @@
         });
     </script>
 </body>
+
 </html>

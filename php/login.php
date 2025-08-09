@@ -15,8 +15,6 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $row = mysqli_fetch_assoc($result);
-
-    $_SESSION['userID'] = $row['userID'];
     header("Location: ../html/index.html");
     exit();
 } else {
@@ -26,4 +24,5 @@ if ($result->num_rows > 0) {
 
 // Close the database connection
 $conn->close();
+
 ?>
