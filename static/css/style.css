@@ -1,0 +1,1290 @@
+/* =========== Google Fonts ============ */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+/* =============== Globals ============== */
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /*Energy*/
+  --color-orange:#e07d54;
+  --color-white:#fff;
+  --color-lightgrey:#e6e1dd;
+  --color-blue:#304f6d;
+  --color-lightblue:#e2f3fd;
+  --color-yellow:#ffe1ad;
+  --color-green:#899481;
+  --color-black:#000000;
+
+}
+
+body {
+  min-height: 100vh; 
+  overflow-x: hidden; /*ป้องกันการเลื่อนแนวนอน*/
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+/* =============== Sidebar ================ */
+.sidebar {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--color-blue); /*สีพื้นหลัง*/
+  border-left: 10px solid var(--color-blue); /*แถบสีฝั้งซ้าย*/
+  transition: 0.5s; /*ระยะเวลาปิด sidebar*/
+  overflow: hidden;
+}
+.sidebar.active {
+  width: 80px;
+}
+
+.sidebar ul {
+  position: relative;
+  list-style-type: none;
+  height: 10px;
+  width: 90%; /*ความกว้างของ ul*/
+  margin: 0.8rem auto;
+  line-height: 50px;
+}
+
+.sidebar ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-radius: 0.8rem; /*ขอบไฮไลท์*/
+} 
+
+.sidebar ul li:hover,
+.sidebar ul li.hovered {
+  background-color: var(--color-lightblue); /*สีของไฮไลท์*/
+}
+
+.sidebar ul li:nth-child(1) {
+  margin-bottom: 10px; /*ความห่างระหว่าง logo กับ icon */
+  pointer-events: none;
+}
+
+.sidebar ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--color-orange); /*สีของ text*/
+}
+.sidebar ul li:hover a,
+.sidebar ul li.hovered a {
+  color: var(--color-blue); /*สีของ text*/
+}
+
+.sidebar ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 62px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+
+.sidebar ul li a .icon .logo-img{
+  width: 45px; 
+}
+
+.sidebar ul li a .icon i {
+  font-size: 1.75rem;
+}
+
+.sidebar ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 50px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap; /*ต่อให้คำจะยาวแค่ไหนก็ไม่ขึ้นบรรทัดใหม่*/
+}
+
+/* ===================== Main(TOPBAR) ===================== */
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--color-white); /*สีพื้นหลัง*/
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+  width: 400px;
+  margin: 0 10px;
+}
+
+.search label {
+  position: relative;
+  width: 100%;
+}
+
+.search label input {
+  width: 100%;
+  height: 40px;
+  background: #eee; /*สีพื้นหลังในช่อง search*/
+  border-radius: 40px;
+  padding: 5px 20px;
+  padding-left: 35px;
+  font-size: 18px;
+  outline: none;
+  border: none;
+}
+
+.search label i {
+  position: absolute;
+  top: 0;
+  left: 10px; /*ตำแหน่ง icon search*/
+  font-size: 1.2rem;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  
+}
+
+/* ======================== SUB-MENU ===================== */
+
+.sub-menu-wrap {
+  position: fixed;
+  display: flex;
+  top: 7%;
+  right: 0;
+  width: 240px;
+  max-height: 0; 
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+  max-height: 400px; 
+  z-index: 1; /*ทำให้ profile dropdown อยู่ชั้นนอกสุด*/
+}
+
+.submenu {
+  background: var(--color-lightgrey);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info h3 {
+  font-weight: 300;
+}
+
+.user-info img {
+  width: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.submenu hr {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background: #304f6d; /*สีของเส้นในกรอบเมนู profile*/
+  margin: 15px 0 10px;
+}
+
+.sub-menu-link{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-black);
+  margin: 12px 0;
+}
+
+.sub-menu-link p {
+  width: 100%;
+}
+
+.sub-menu-link img {
+  width: 40px;
+  background: var(--color-orange);
+  border-radius: 50%;
+  padding: 8px;
+  margin-right: 15px;
+}
+
+.sub-menu-link span {
+  font-size: 22px;
+  transition: transform 0.2s;
+}
+
+.sub-menu-link:hover span {
+  transform: translateX(5px);
+}
+
+.sub-menu-link:hover p {
+  font-weight: 600;
+}
+
+/* ============================== Home ============================= */
+/* Styles for Home Page */
+#home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px 0;
+}
+
+#home h6 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  background-image: linear-gradient(to right, #fe704c, #feb47b, #ffdf8e); /* สร้างพื้นหลังไล่สี */
+  -webkit-background-clip: text; /* ใช้พื้นหลังเป็นเท็กซ์ */
+  background-clip: text;
+  color: transparent; /* ทำให้เนื้อหาใน <h6> มองไม่เห็น */
+}
+
+
+/* Styles for Announcement Section */
+.announcement-section {
+  margin-top: 30px;
+}
+
+.announcement-section h2 {
+  font-size: 24px;
+  color: #304f6d;
+}
+
+
+.announcement-box p {
+  margin-bottom: 10px;
+}
+
+
+/* Styles for Announcement Box */
+.announcement-box {
+  position: relative; /* เพื่อให้เป็นตำแหน่งอ้างอิงของลูกศร */
+  height: 400px;
+  
+  background-color: #e2f3fd;
+  padding: 50px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative; /* เพื่อให้เป็นตำแหน่งอ้างอิงของลูกศร */
+}
+
+/* Styles for Left Arrow */
+.left-arrow {
+  position: absolute;
+  top: 50%; /* ปรับตำแหน่ง Y เพื่อขยับลูกศรให้อยู่กลาง .announcement-image */
+  left: 10px; /* กำหนดระยะห่างจากขอบซ้ายของ .announcement-box */
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  font-size: 40px; /* ปรับขนาดลูกศรใหญ่ขึ้น */
+  color: #333; /* กำหนดสีของลูกศร */
+}
+
+/* Styles for Right Arrow */
+.right-arrow {
+  position: absolute;
+  top: 50%; /* ปรับตำแหน่ง Y เพื่อขยับลูกศรให้อยู่กลาง .announcement-image */
+  right: 10px; /* กำหนดระยะห่างจากขอบขวาของ .announcement-box */
+  transform: translate(50%, -50%);
+  cursor: pointer;
+  font-size: 40px; /* ปรับขนาดลูกศรใหญ่ขึ้น */
+  color: #333; /* กำหนดสีของลูกศร */
+}
+
+
+
+.announcement-image {
+  position: absolute;
+  top: 50%; /* ย้ายจุดมุมบนของ .announcement-image ไปที่ 50% ของ .announcement-box */
+  left: 50%; /* ย้ายจุดมุมซ้ายของ .announcement-image ไปที่ 50% ของ .announcement-box */
+  transform: translate(-50%, -50%); /* ใช้ transform เพื่อย้าย .announcement-image กลับไปที่ตำแหน่งที่ต้องการ คือ กลางของ .announcement-box */
+  width: 100%; /* กำหนดความกว้างของ .announcement-image */
+  height: 100%; /* กำหนดความสูงของ .announcement-image */
+  max-width: 95%; /* ไม่ให้ .announcement-image เกินขอบพื้นที่ที่กำหนด */
+  max-height: 90%; /* ไม่ให้ .announcement-image เกินขอบพื้นที่ที่กำหนด */
+  
+}
+
+
+
+
+
+/* Styles for Featured Books Section */
+.featured-books-section {
+margin-top: 50px;
+}
+
+.featured-books-section h2 {
+font-size: 24px;
+color: #304f6d;
+}
+
+.featured-books-container {
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+}
+
+.book-card {
+width: 30%;
+height: 80%;
+background-color: #e2f3fd;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-card img {
+width: 80%;
+border-radius: 5px;
+margin-bottom: 10px;
+}
+
+.book-card h3 {
+font-size: 18px;
+color: #304f6d;
+margin-bottom: 5px;
+}
+
+.book-card p {
+font-size: 14px;
+color: #899481;
+}
+
+@keyframes slideshow {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.announcement-box img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: slideshow 40s infinite;
+}
+
+.announcement-box img:nth-child(2) {
+  animation-delay: 10s; /* เริ่มเล่นภาพถัดไปหลังจาก 10 วินาที */
+}
+
+.announcement-box img:nth-child(3) {
+  animation-delay: 20s; /* เริ่มเล่นภาพถัดไปหลังจาก 20 วินาที */
+}
+
+
+
+
+
+
+
+
+/* ============================== BOOK ============================= */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* ระยะห่างระหว่าง .book */
+}
+.list h1{
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 20px;
+  background-image: linear-gradient(to right, #fe704c, #ffb073, #ffdf8e); /* สร้างพื้นหลังไล่สี */
+  -webkit-background-clip: text; /* ใช้พื้นหลังเป็นเท็กซ์ */
+  background-clip: text;
+  color: transparent; /* ทำให้เนื้อหาใน <h6> มองไม่เห็น */
+}
+
+.book {
+  width: 300px; /* กำหนดขนาดคงที่ของ .book */
+  display: flex;
+  align-items: center;
+  border: 2px solid #ffffff; /* เพิ่มเส้นขอบ */
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px; /* เพิ่มขอบมน */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+}
+
+.book img {
+  width: 120px; /* ปรับขนาดของรูป */
+  margin-right: 30px; /* ระยะห่างระหว่างรูปและข้อมูล */
+  box-shadow: 0 4px 6px rgba(1, 1, 1, 1); /* เพิ่มเงา */
+}
+
+.book-info {
+  flex-grow: 1; /* ขยายข้อมูลเต็มพื้นที่ */
+}
+
+.book-info h2 {
+  margin-top: 0; /* ไม่มีช่องว่างด้านบน */
+}
+
+.book-info p {
+  margin: 5px 0; /* ระยะห่างของข้อมูล */
+}
+/* สไตล์สำหรับปุ่ม "ข้อมูลเพิ่มเติม" */
+.more-info-btn {
+  background-color: #304f6d;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none; /* ลบขีดเส้นใต้ข้อความ */
+  display: inline-block;
+  transition: background-color 0.3s; /* เพิ่มเอฟเฟคการเปลี่ยนสี */
+  position: relative; /* เพิ่ม */
+  box-shadow: 0 4px 6px rgba(35, 35, 35, 0.1); /* เพิ่มเงา */
+}
+/* เมื่อโฮเวอร์ที่ปุ่ม "ข้อมูลเพิ่มเติม" */
+.more-info-btn:hover {
+  background-color: #304f6d; /* เปลี่ยนสีเมื่อโฮเวอร์ */
+}
+/*ปุ่มกดไปต่อ ถอยหลัง และเลขหน้าปัจจุบัน*/
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  padding: 10px 20px;
+  background-color: #304f6d;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 0 5px;
+}
+
+.current-page {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  color: #000;
+  border-radius: 5px;
+  margin: 0 5px;
+}
+
+
+/* ============================== Lendings ============================= */
+.Lending {
+  background-color: var(--color-white);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 4px 5px 15px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  margin: 0 auto;
+}
+
+.Lending h2 {
+  color:var(--color-blue) ;
+  text-align: center;
+}
+
+.Lending .form-group {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 10%;
+}
+
+.form-group label,
+.form-group input {
+  margin-right: 0px; 
+}
+
+.Lending .form-group input[type="text"],
+.Lending .form-group input[type="date"],
+.Lending .form-group input[type="email"],
+.Lending .form-group input[type="checkbox"],
+.Lending .form-group input[type="member"] {
+  width: calc(50% - 10px);
+  padding: 12px 20px;
+  border: 1px solid lightgrey;
+  border-radius: 20px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.Lending .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  flex-basis: calc(50% - 10px);
+  margin-left: 10px;
+}
+
+.Lending .form-group label {
+  width: 50%;
+}
+
+.Lending .form-group input[type="text"],
+.Lending .form-group input[type="date"],
+.Lending .form-group input[type="email"],
+.Lending .form-group input[type="checkbox"],
+.Lending .form-group input[type="member"]{
+  width: 50%;
+}
+
+.Lending .form-group input[type="checkbox"] {
+  width: 20px; /* กำหนดขนาดความกว้างของ checkbox */
+  height: 10px; /* กำหนดขนาดความสูงของ checkbox */
+  background-color: #f0f0f0; /* กำหนดสีพื้นหลังของ checkbox */
+  display: inline-block; /* ทำให้ checkbox เรียงต่อเนื่องกับข้อความ */
+}
+
+.popup {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-white);
+  padding: 20px;
+  border: 2px solid var(--color-whitee);
+  border-radius: 5px;
+  z-index: 9999;
+}
+
+.popup img {
+    width: 100px;
+    height: 100px; /* เพิ่มความสูงให้รูปภาพ */
+    display: block;
+    margin: 10px auto; /* ย้ายรูปภาพไปตรงกลาง */
+    border-radius: 50px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.popup h2 {
+  font-size: 38px;
+  font-weight: 400;
+  margin: 20px 10px 10px;
+  text-align: center;
+}
+
+.popup p {
+  margin: 10px 10px 10px;
+  text-align: center;
+}
+
+.popup .btn1 {
+  width: 20%;
+  display: block;
+  position: absolute;
+  bottom: 2.5px; /* ระยะห่างจากด้านล่างของ Popup */
+  left: 50%; /* จัดตำแหน่งให้อยู่ตรงกลางแนวนอน */
+  transform: translate(-50%, -50%); /* ย้ายปุ่มไปที่ตรงกลางทั้งแนวนอนและแนวตั้ง */
+  border-radius: 25px;
+  color: var(--color-blue);
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+
+
+.overlay {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+/* ============================== Customers ============================= */
+.customer-search {
+  display: flex;
+  flex-wrap: wrap; 
+  width: 50%; 
+  margin: 10px auto; 
+  justify-content: center;
+  align-items: center;
+
+}
+
+.customer-search label {
+  position: relative;
+  width: 45%; 
+  margin-bottom: 10px;
+}
+
+.customer-search label input {
+  width: 100%;
+  height: 30px; 
+  background: #eee;
+  border-radius: 30px; 
+  padding: 5px 20px;
+  padding-left: 30px; 
+  font-size: 14px; 
+  outline: none;
+  border: none;
+}
+
+.btn {
+  background-image: linear-gradient(to right, #E07D54, #304f6d); 
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:hover {
+  background-image: linear-gradient(to right, #af8672, #1b3045); 
+  color: #fff;
+}
+
+.btn:active {
+  background-color: #98573C; 
+}
+
+.button-container {
+  width: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.information-container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  margin: 0 auto;
+  
+}
+
+.information-container img {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.info-group {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 10%;
+}
+
+/* ลดระยะห่างระหว่าง label และ input ในบรรทัดเดียวกัน */
+.info-group label,
+.info-group input {
+  margin-right: 0px; /* ปรับค่าตามที่ต้องการ */
+}
+.info-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  flex-basis: calc(50% - 10px);
+  margin-left: 10px;
+}
+.info-group input[type="text"],
+.info-group input[type="number"]
+ {
+    width: calc(50% - 10px);
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+/* เพิ่มความกว้างของ label เพื่อให้ติดกันในบรรทัดเดียวกัน */
+.info-group label {
+    width: 50%;
+}
+
+/* ปรับความกว้างของ input เพื่อให้ติดกันในบรรทัดเดียวกัน */
+.info-group input[type="text"],
+.info-group input[type="number"]{
+    width: 50%;
+}
+/* ============================== Statics ============================= */
+.box1 {
+  background: #E6E1DD;
+  font-family: 'Ubuntu', sans-serif;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 250px;
+  height: 100px;
+  margin-top: 100px;
+  margin-left: 150px;
+  position: absolute;
+  box-sizing: content-box;
+  
+}
+.box2 {
+  background: #E6E1DD;
+  font-family: 'Ubuntu', sans-serif;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 250px;
+  height: 100px;
+  margin-top: 100px;
+  margin-left: 450px;
+  position: absolute;
+  box-sizing: content-box;
+  
+}
+.box3 {
+  background: #E6E1DD;
+  font-family: 'Ubuntu', sans-serif;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 250px;
+  height: 100px;
+  margin-top: 100px;
+  margin-left: 750px;
+  position: absolute;
+  box-sizing: content-box;
+  
+}
+.box4 {
+  background: #E6E1DD;
+  font-family: 'Ubuntu', sans-serif;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 250px;
+  height: 100px;
+  margin-top: 100px;
+  margin-left: 1050px;
+  position: absolute;
+  box-sizing: content-box;
+  
+}
+.box5 {
+  background: #E6E1DD;
+  font-family: 'Ubuntu', sans-serif;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 550px;
+  height: 300px;
+  margin-top: 250px;
+  margin-left: 150px;
+  position: absolute;
+  box-sizing: content-box;
+  
+}
+.box6 {
+  background: #E6E1DD;
+  font-family: 'Ubuntu', sans-serif;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 550px;
+  height: 300px;
+  margin-top: 250px;
+  margin-left: 750px;
+  position: absolute;
+  box-sizing: content-box;
+  
+}
+
+
+
+.newcustomer {
+  font-size: 12px;
+}
+
+.onlineorder{
+  font-size: 12px;
+}
+
+.revenue{
+  font-size: 12px;
+}
+.dailyaverage{
+  font-size: 12px;
+}
+.selecttime {
+  font-weight: 200;
+  color: gray;
+  padding-left: 75%;
+  margin-top: -2px;
+  font-size: 8px;
+  display: flex;
+}
+
+.count {
+  display: flex;
+  padding-left: 75%;
+  padding-top: 10%;
+  font-size: 25px;
+}
+
+.chartpercentage{
+  position: absolute;
+  top : 60%;
+  right: 73%;
+}
+
+
+.chart1{
+  width: 60px;
+  height: 60px;
+  /* background: cornflowerblue; */
+  margin-bottom: 1px;
+  display: flex;
+  position: absolute;
+  top: 100%;
+}
+
+.customercircle{
+  fill: none;
+  stroke: rgb(233, 107, 113);
+  stroke-width: 5px;
+  stroke-dasharray: 238;
+  stroke-dashoffset: 238;
+  animation: anim1 2s linear forwards;
+}
+.chartcustomer{
+  position: absolute;
+  top : 30%;
+  
+}
+
+.ordercircle{
+  fill: none;
+  stroke: rgb(71, 82, 240);
+  stroke-width: 5px;
+  stroke-dasharray: 238;
+  stroke-dashoffset: 238;
+  animation: anim2 2s linear forwards;
+}
+.chartorder{
+  position: absolute;
+  top : 30%;
+  
+}
+
+.revenuecircle{
+  fill: none;
+  stroke: rgb(91, 235, 146);
+  stroke-width: 5px;
+  stroke-dasharray: 238;
+  stroke-dashoffset: 238;
+  animation: anim3 2s linear forwards;
+}
+.chartrevenue{
+  position: absolute;
+  top : 30%;
+  
+}
+.averagecircle{
+  fill: none;
+  stroke: rgb(243, 190, 92);
+  stroke-width: 5px;
+  stroke-dasharray: 238;
+  stroke-dashoffset: 238;
+  animation: anim4 2s linear forwards;
+}
+.chartaverage{
+  position: absolute;
+  top : 30%;
+  
+}
+.backgroundcircle{
+  fill: none;
+  stroke: rgb(221, 221, 221);
+  stroke-width: 5px;
+  stroke-dasharray: 238;
+  
+  
+}
+.backgroundchart{
+  position: absolute;
+  top : 30%;
+  
+}
+@keyframes anim1{
+  100%{
+      stroke-dashoffset: 99;
+  }
+}
+
+@keyframes anim2{
+  100%{
+      stroke-dashoffset: 47;
+  }
+}
+
+@keyframes anim3{
+  100%{
+      stroke-dashoffset: 54;
+  }
+}
+
+@keyframes anim4{
+  100%{
+      stroke-dashoffset: 154;
+  }
+}
+
+.analytics{
+  font-size: 12px;
+}
+
+.donut{
+  font-size: 12px;
+}
+.barchart{
+  display: block;
+  
+}
+
+.x{
+  margin: 0;
+  padding: 0;
+  width: 50px;
+  height: 100%;
+  display: inline-block;
+  float: left;
+  
+}
+
+.x li{
+  list-style: none;
+  height: 50px;
+  position: relative;
+  bottom: -10px;
+}
+
+.x span{
+  font-size: 12px;
+  font-weight: 600;
+  position: absolute;
+  bottom: 10;
+  right: 10px;
+}
+
+.bars{
+  font-size: 12px;
+  font-weight: 600;
+  background: #ebe7e7;
+  margin : 5;
+  padding: 0;
+  display: inline-block;
+  width: 500px;
+  height: 210px;
+  box-shadow: 0 0 10px 0 #ebe7e7;
+  border-radius: 5px;
+
+}
+
+.bars li{
+  display:table-cell;
+  width: 100px;
+  height: 300px;
+  position: relative;
+}
+
+.bars span{
+  width: 80%;
+  position: absolute;
+  bottom: 70px;
+  left: 15px;
+}
+
+.bars .bar{
+  display: block;
+  background: rgb(114, 217, 243);
+  width: 25px;
+  height: 100px;
+  position: absolute;
+  bottom: 90px;
+  left: -5px;
+  margin-left: 25px;
+  text-align: center;
+  transition: 0.5s;
+  transition-property: background;
+  
+}
+
+.bars .bar:hover{
+  background: #f5a5a5;
+  cursor: pointer;
+}
+
+.bars .bar::before{
+  color: #fff;
+  content: attr(data-percentage) '';
+  position: relative;
+  bottom: 1px;
+
+
+}
+
+.donutchart{
+  width: 250px; 
+  height: 250px;
+  border-radius: 50%;
+  background: red;
+  margin-left: 50px;
+  margin-top: 30px;
+
+  background: conic-gradient(
+      rgb(77, 104, 224) 0deg 120deg,
+      rgb(92, 211, 131) 120deg 250deg,
+      rgb(250, 180, 51) 250deg 280deg,
+      rgb(241, 73, 67) 280deg 360deg
+     
+      
+  );
+}
+
+.donutchart::before{
+  content: "";
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.donutchart{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.donutdata{
+  top: 55px;
+  position: absolute;
+  left: 75%;
+ 
+}
+
+.donutdata span{
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 12px;
+  margin-right: 88%;
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.segment1{
+  list-style: none;
+  
+  
+  
+}
+
+.segment1 li::before{
+  content: "\2022";
+  color: rgb(77, 104, 224);
+  font-size: 2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 0.1em;
+}
+.segment2{
+  list-style: none;
+  
+}
+
+.segment2 li::before{
+  content: "\2022";
+  color: rgb(92, 211, 131);
+  font-size: 2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 0.1em;
+}
+.segment3{
+  list-style: none;
+  
+}
+
+.segment3 li::before{
+  content: "\2022";
+  color: rgb(250, 180, 51);
+  font-size: 2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 0.1em;
+}
+.segment4{
+  list-style: none;
+  
+}
+
+.segment4 li::before{
+  content: "\2022";
+  color: rgb(241, 73, 67);
+  font-size: 2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 0.1em;
+}
+
+/* ============================== profile ============================= */
+.profile h1{
+  font-size: 40px;
+  margin-bottom: 20px;
+  background-image: linear-gradient(to right, #fe704c, #feb47b, #ffdf8e); /* สร้างพื้นหลังไล่สี */
+  -webkit-background-clip: text; /* ใช้พื้นหลังเป็นเท็กซ์ */
+  background-clip: text;
+  color: transparent; /* ทำให้เนื้อหาใน <h6> มองไม่เห็น */
+}
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.profile {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 700px;
+  padding: 20px;
+  margin: 0 auto; /* เพิ่มบรรทัดนี้ */
+}
+.profile header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.profilePicture {
+  text-align: center;
+  width: 150px; /* กำหนดความกว้างของภาพ */
+  height: 150px; /* กำหนดความสูงของภาพ */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  margin-bottom: 20px;
+  border-radius: 10%; /* กำหนดมุมของภาพให้เป็นวงกลม */
+  transform: translateX(170%);
+}
+
+.profilePicture img {
+  width: 150px; /* กำหนดความกว้างของภาพ */
+  height: 150px; /* กำหนดความสูงของภาพ */
+  border-radius: 10%; /* กำหนดมุมของภาพให้เป็นวงกลม */
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.information-group {
+  margin-bottom: 0px;
+  display: flex;
+  justify-self: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  
+
+}
+.information-group label{
+  display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #304F6D;
+    font-weight: bold;
+    flex-basis: calc(50% - 10px);
+    margin-left: 10px;
+}
+.bold-text {
+  font-weight: bold;
+  margin-right: 5px;
+}
+.dataProfile {
+  width: 200px; /* กำหนดความกว้าง */
+  height: 25px; /* กำหนดความสูง */
+  font-size: 12px; /* กำหนดขนาดตัวอักษร */
+  padding: 8px; /* กำหนดการเสริม */
+  border: 1px solid #ccc; /* กำหนดเส้นขอบ */
+  margin-right: 5%;
+  /* อื่นๆ ที่คุณต้องการกำหนด */
+  
+    padding: 10px 20px; /* Add horizontal padding */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: block; /* Make the fields block elements */
+    margin: 2px;
+}
+
+.profile-actions {
+  text-align: center;
+}
+
+.editProfile-botton{
+  background-image: linear-gradient(to right, #E07D54, #304f6d); /* Linear gradient */
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 20px; /* Increase border-radius for more curvature */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add box-shadow for depth */
+    cursor: pointer;
+    margin-top: 100px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+/* ============================== addbook ============================= */
+
